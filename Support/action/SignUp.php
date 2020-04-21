@@ -27,12 +27,12 @@
         
         if($res){
             $arr['success'] = 1;
-            $arr['message'] = "Pendaftaran Berhasil".mysqli_error();
+            $arr['message'] = "Pendaftaran Berhasil".mysqli_error($con);
             echo json_encode($arr);
             ///echo "YES";
         }else{
             $arr['success'] = 0;
-            $arr['message'] = "ID Mungkin Sudah digunakan\n"."ERROR: ".mysqli_error();
+            $arr['message'] = "ID Mungkin Sudah digunakan\n"."ERROR: ".mysqli_error($con);
             echo json_encode($arr);
             ///echo $StuSignUp;
         }

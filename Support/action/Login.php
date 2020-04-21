@@ -44,7 +44,7 @@ if($res){
         if($r){
             header("location: ../../$path"); 
         }else{
-            echo "<script>alert('Login gagal, kesalahan database'".mysqli_error().");</script>";
+            echo "<script>alert('Login gagal, kesalahan database'".mysqli_error($con).");</script>";
             echo "<script>window.location.href='../../index.php';</script>";
         }
         

@@ -99,9 +99,9 @@
                     <?php
                         include_once("Support/action/connect.php");
                         $UserId = $_SESSION['UserId'];
-                        $a = mysql_fetch_array(mysql_query("SELECT MAX(loginTime) as LoginTime FROM loginhistory WHERE stuid=$UserId AND isTeacher=1;"));
+                        $a = mysqli_fetch_array(mysqli_query($con, "SELECT MAX(loginTime) as LoginTime FROM loginhistory WHERE stuid=$UserId AND isTeacher=1;"));
                         echo $a['LoginTime'];
-                        mysql_close($con);
+                        mysqli_close($con);
                     ?>
                     </font>
                     <div id="content">

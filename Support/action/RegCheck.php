@@ -5,7 +5,7 @@ include_once("connect.php");
 $arr = array();
 
 if(isset($_POST['UserId'])){
-    if(isTaken($_POST['UserId'],$_POST['Level'])){
+    if(isTaken($con,$_POST['UserId'],$_POST['Level'])){
         $arr['success'] = 0;
     }else{
         $arr['success'] = 1;
@@ -13,7 +13,7 @@ if(isset($_POST['UserId'])){
     echo json_encode($arr);
 }
 
-function isTaken($UserId,$Level){
+function isTaken($con,$UserId,$Level){
     $SQL = "";
     if($Level==0){
         $SQL = "SELECT * FROM student WHERE StuId= '".$UserId."';";
