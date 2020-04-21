@@ -1,8 +1,8 @@
 <?php
 
 error_reporting(E_ALL & ~E_DEPRECATED);
-echo "test"
 include_once("connect.php");
+
 session_start();
 $UserId = "";
 $UserPassword = "";
@@ -13,44 +13,45 @@ if(isset($_POST['UserId']) && isset($_POST['UserPassword']) && isset($_POST['Use
     $UserLevel    = $_POST['UserLevel'];
 }
 
-$LoginStuSQL     = "SELECT StuName,StuPassword,StuId FROM Student WHERE StuId='".$UserId."';";
-$LoginTeacherSQL = "SELECT TeacherName,TeacherId,TeacherPassword FROM Teacher WHERE TeacherId='".$UserId."';";
+$LoginStuSQL     = "SELECT StuName,StuPassword,StuId FROM student WHERE StuId='".$UserId."';";
+$LoginTeacherSQL = "SELECT TeacherName,TeacherId,TeacherPassword FROM teacher WHERE TeacherId='".$UserId."';";
 $check = "";
 $name = "";
 $path = "";
+
 if($UserLevel==0){
-    $res = mysql_query($LoginStuSQL);
+    $res = mysqli_query($con, $LoginStuSQL);
     $check = "StuPassword";
     $name = "StuName";
     $path = "Student.php";
 }else if($UserLevel==1){
-    $res = mysql_query($LoginTeacherSQL);
+    $res = mysqli_query($con, $LoginTeacherSQL);
     $check = "TeacherPassword";
     $name = "TeacherName";
     $path = "Teacher.php";
 }
 
-$LoginInfo = "INSERT INTO loginhistory VALUES($UserId,$UserLevel,NOW());";
+$LoginInfo = "INSERT INTO loginhistory VALUES('".$UserId."','".$UserLevel."',NOW());";
 
 if($res){
-    $arr = mysql_fetch_array($res);
+    $arr = mysqli_fetch_array($res, MYSQLI_ASSOC);
     if($arr[$check]==$UserPassword && $UserPassword!=""){
         $_SESSION['level'] = $UserLevel;
         $_SESSION['UserId'] = $UserId;
         $_SESSION['UserName'] = $arr[$name];
-        $_SESSION['LoginTime'] = date('Y-m-d H:i:s');
-        $r = mysql_query($LoginInfo);
+        $_SESSION['LoginTime'] = date("Y-m-d H:i:s");
+        $r = mysqli_query($con, $LoginInfo);
         if($r){
             header("location: ../../$path"); 
         }else{
-            echo "<script>alert('访问数据库时出现了问题，登录失败！！'".mysql_error().");</script>";
+            echo "<script>alert('Login gagal, kesalahan database'".mysqli_error().");</script>";
             echo "<script>window.location.href='../../index.php';</script>";
         }
         
     }else{
-        echo "<script>alert('登录失败，请检查登录信息！！');</script>";
+        echo "<script>alert('Login gagal, periksa username dan password');</script>";
         echo "<script>window.location.href='../../index.php';</script>";
     }
 }
 
-mysql_close($con);
+mysqli_close($con);

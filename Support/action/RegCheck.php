@@ -5,7 +5,7 @@ include_once("connect.php");
 $arr = array();
 
 if(isset($_POST['UserId'])){
-    if(isRepeat($_POST['UserId'],$_POST['Level'])){
+    if(isTaken($_POST['UserId'],$_POST['Level'])){
         $arr['success'] = 0;
     }else{
         $arr['success'] = 1;
@@ -13,20 +13,16 @@ if(isset($_POST['UserId'])){
     echo json_encode($arr);
 }
 
-function isRepeat($UserId,$Level)
-{
-    $lv = "";
-    $ky = "";
+function isTaken($UserId,$Level){
+    $SQL = "";
     if($Level==0){
-        $lv = "Student";
-        $ky = "StuId";
+        $SQL = "SELECT * FROM student WHERE StuId= '".$UserId."';";
     }else{
-        $lv = "Teacher";
-        $ky = "TeacherId";
+        $SQL = "SELECT * FROM teacher WHERE TeacherId= '".$UserId."';";
     }
-    $SQL = "SELECT * FROM $lv WHERE $ky=$UserId;";
-    $res = mysql_query($SQL);
-    $cnt = mysql_num_rows($res);
+    
+    $res = mysqli_query($con, $SQL);
+    $cnt = mysqli_num_rows($res);
     if($cnt==0){
         return 0;
     }else{

@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>在线考试-教师端</title>
+    
+    <title>Yuk Ujian - Guru</title>
 
     <!-- Bootstrap -->
     <link href="Support/css/bootstrap.min.css" rel="stylesheet">
@@ -24,22 +24,19 @@
     <script src="Support/js/QsetAdd.js"></script>
     <?php include_once("Support/action/connect.php"); session_start(); ?>
     <?php if(!isset($_SESSION['level'])){
-                echo "<b><center><font size='30px'>拒绝访问：你没有登录</font></center></b>"; 
+                echo "<b><center><font size='30px'>Akses Ditolak: Belum Login</font></center></b>"; 
                 return; 
             }else if($_SESSION['level']!=1){
-                echo "<b><center><font size='30px'>请不要尝试越权访问</font></center></b>"; 
+                echo "<b><center><font size='30px'>Akses Ditolak: Bukan Guru</font></center></b>"; 
                 return; 
             } 
     ?>
     <script src="Support\js\Global.js"></script>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="Support/jquery-3.2.1.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="Support/js/bootstrap.min.js"></script>
     <script src="Support/js/Teacher.js"></script>
     <script type="text/javascript" src="Support/js/dialog.min.js"></script>
    
-    
     <p id="thisNav" style="display:none">1</p>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
@@ -51,18 +48,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">在线考试系统</a>
+                <a class="navbar-brand" href="#">Yuk Ujian</a>
                 <ul class="nav navbar-nav navbar-right">
-                    <p class="navbar-text" style="color:white">你好，<?php echo $_SESSION['UserName']; ?> 老师</p>
+                    <p class="navbar-text" style="color:white">Halo，<?php echo $_SESSION['UserName']; ?></p>
                     <li>
-                        <a style="color:rgb(0, 255, 98)" href="Support/action/Logout.php">注销登录</a>
+                        <a style="color:rgb(0, 255, 98)" href="Support/action/Logout.php">Log Out</a>
                     </li>
                 </ul>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="#" id="nowTime">正在请求服务器资源</a>
+                        <a href="#" id="nowTime">Sedang Memuat..</a>
                     </li>
                 </ul>
             </div>
@@ -79,13 +76,13 @@
                         </a>
                     </li>
                     <li id="click2">
-                        <a>学生成绩</a>
+                        <a>Skor Siswa</a>
                     </li>
                     <li id="click3">
-                        <a>浏览试题</a>
+                        <a>Cari Pertanyaan</a>
                     </li>
                     <li id="click4">
-                        <a>录入试题</a>
+                        <a>Masukkan Pertanyaan</a>
                     </li>
                     <li id="click5">
                         <a>快速组卷</a>
@@ -93,10 +90,9 @@
                 </ul>
             </div>
 
-            <!-- 欢迎 -->
             <div id="info1">
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <h1 class="page-header">你好</h1>
+                    <h1 class="page-header">Halo</h1>
 
                     <h2 class="sub-header"> 本次登录时间 </h2>
                     <font size="6px">
@@ -116,35 +112,34 @@
                 </div>
             </div>
 
-            <!-- 学生管理 -->
+            <!-- Manajemen Siswa -->
             <div id="info2" style="display:none">
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <h1 class="page-header">学生管理</h1>
+                    <h1 class="page-header">Manajemen Siswa</h1>
 
                     <div id="search" style="width:50%">
                         <form role="form" onsubmit="return false;">
-                            <h2 class="sub-header">条件搜索
-                                <button type="button" id="search" class="btn btn-primary">查询</button>
+                            <h2 class="sub-header">Pencarian
+                                <button type="button" id="search" class="btn btn-primary">Pertanyaan</button>
                             </h2>
                             <div class="input-group">
-                                <span class="input-group-addon">姓名</span>
-                                <input type="text" id="SearchName" class="form-control" placeholder="输入姓名或者模糊条件">
+                                <span class="input-group-addon">Nama</span>
+                                <input type="text" id="SearchName" class="form-control" placeholder="Masukkan nama siswa">
                             </div>
                             <div class="input-group">
-                                <span class="input-group-addon">学号</span>
-                                <input type="text" id="SearchId" class="form-control" placeholder="输入学号或者模糊条件">
+                                <span class="input-group-addon">Username</span>
+                                <input type="text" id="SearchId" class="form-control" placeholder="Masukkan username">
                             </div>
                             <div class="input-group">
-                                <span class="input-group-addon">分数范围</span>
-                                <input type="text" id="SearchScore1" class="form-control" placeholder="最小值">
+                                <span class="input-group-addon">Rentang Skor</span>
+                                <input type="text" id="SearchScore1" class="form-control" placeholder="Min">
                                 <span class="input-group-addon">to</span>
-                                <input type="text" id="SearchScore2" class="form-control" placeholder="最大值">
+                                <input type="text" id="SearchScore2" class="form-control" placeholder="Maks">
                             </div>
                         </form>
                     </div>
 
-                    <h2 class="sub-header">学生信息</h2>
-                    <!-- 学生管理主体布局 -->
+                    <h2 class="sub-header">Informasi Siswa</h2>
                     <div id="content_Stu">
                         <div >
                             <input type="hidden" id="currentPage" value="1">
@@ -156,10 +151,10 @@
                             <table class="table table-bordered table-hover table-striped table-condensed">            
                                 <thead>
                                     <tr>
-                                        <td width="25%">ID</td>
-                                        <td width="25%">名字</td>
-                                        <td width="25%">最近登录时间</td>
-                                        <td width="25%">总分</td>
+                                        <td width="25%">Username</td>
+                                        <td width="25%">Nama</td>
+                                        <td width="25%">Login Terakhir</td>
+                                        <td width="25%">Total Skor</td>
                                     </tr>
                                     <tr id="tip" style="display:none;">
                                         <td colspan="4"></td>
@@ -175,12 +170,12 @@
                 </div>
             </div>
 
-            <!-- 浏览试题 -->
+            <!-- Telusuri Pertanyaan -->
             <div id="info3" style="display:none">
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <h1 class="page-header">浏览试题</h1>
+                    <h1 class="page-header">Telusuri Pertanyaan</h1>
 
-                    <h2 class="sub-header">选择试题集
+                    <h2 class="sub-header">Pilih Set Soal
                         <select id="choose_set" name="choose_set" class="dropdown">
                         </select>
                     </h2>
@@ -193,11 +188,11 @@
                             <table class="table table-bordered table-hover table-striped table-condensed">            
                                 <thead>
                                     <tr>
-                                        <td width="20%">题目编号</td>
-                                        <td width="20%">分值</td>
-                                        <td width="20%">发布者</td>
-                                        <td width="20%">创建时间</td>
-                                        <td width="20%">操作</td>
+                                        <td width="20%">Nomor</td>
+                                        <td width="20%">Skor</td>
+                                        <td width="20%">Penerbit</td>
+                                        <td width="20%">Dibuat</td>
+                                        <td width="20%">Operasi</td>
                                     </tr>
                                     <tr id="tip_Ques" style="display:none;">
                                         <td colspan="4"></td>
@@ -214,35 +209,35 @@
                 </div>
             </div>
 
-            <!-- 录入试题 -->
+            <!-- Memasukkan Pertanyaan -->
             <div id="info4" style="display:none">
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <h1 class="page-header">录入试题(多选题)</h1>
+                    <h1 class="page-header">Memasukkan Pertanyaan(Pilihan Ganda)</h1>
 
-                    <h3 class="sub-header">请输入题目信息</h3>
+                    <h3 class="sub-header">Silahkan Masukkan Judul</h3>
 
                     <div class="input-group" style="width:60%;margin-left:20%">
-                        <span class="input-group-addon">本题分值</span>
-                        <input type="number" id="this_score" name="this_score" class="form-control" placeholder="输入一个整数">
+                        <span class="input-group-addon">Skor</span>
+                        <input type="number" id="this_score" name="this_score" class="form-control" placeholder="Masukkan bilangan bulat">
                     </div>
 
                     <div class="input-group" style="width:60%;margin-left:20%">
-                        <span class="input-group-addon">题目内容</span>
-                        <textarea type="textarea" id="this_content" name="this_content" class="form-control" placeholder="输入题目内容" rows="5" style="resize:none">
+                        <span class="input-group-addon">Konten Topik</span>
+                        <textarea type="textarea" id="this_content" name="this_content" class="form-control" placeholder="Masukkan konten pertanyaan" rows="5" style="resize:none">
                         </textarea>
                     </div>
 
-                    <h3 class="sub-header">请设置本题选项并标注答案
-                        <button class="btn btn-primary" id="add_new_choose">添加新选项</button>
-                        <button class="btn btn-success" id="submit_question">提交本题</button>
+                    <h3 class="sub-header">Silahkan tentukan opsi, dan tandai jawaban yang benar
+                        <button class="btn btn-primary" id="add_new_choose">Tambah Opsi Baru</button>
+                        <button class="btn btn-success" id="submit_question">Kirim Pertanyaan Ini</button>
                     </h3>
 
                     <div id="chooses">
                         <div id="add_choose" class="input-group" style="width:60%;margin-left:20%">
-                            <span id="choose_no" class="input-group-addon">备选选项</span>
-                            <input type="text" name="choices" class="form-control" placeholder="输入选项内容">
+                            <span id="choose_no" class="input-group-addon">Opsi Alternatif</span>
+                            <input type="text" name="choices" class="form-control" placeholder="Masukkan Opsi">
                             <span class="input-group-addon">
-                                <input type="checkbox" name="options" id="option1" value=0> 正确标记
+                                <input type="checkbox" name="options" id="option1" value=0> Tandai dengan benar
                             </span>
                         </div>
                     </div>
@@ -252,32 +247,32 @@
         </div>
     </div>
 
-    <!-- 建立试题集(组卷) -->
+    <!-- Buat Set Soal -->
     <div id="info5" style="display:none">
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">快速组卷</h1>
+            <h1 class="page-header">Lembar Jawaban</h1>
 
             <h3 class="sub-header">
-                请输入题集信息
-                <button class="btn btn-success" id="go_create_set">提交组卷</button>
+                Silakan masukkan informasi rangkaian pertanyaan
+                <button class="btn btn-success" id="go_create_set">Kirim Lembar Jawaban</button>
             </h3>
 
             <div class="input-group" style="width:60%;margin-left:20%">
-                <span class="input-group-addon">本次测试名称</span>
-                <input type="text" id="QsetName" class="form-control" placeholder="输入本次考试的名称" />
+                <span class="input-group-addon">Nama Ujian</span>
+                <input type="text" id="QsetName" class="form-control" placeholder="Masukkan Nama Ujian" />
             </div>
 
             <h3 class="sub-header">
-                请从下方题库勾选要加入本题集的试题
+                Silakan periksa pertanyaan yang akan ditambahkan ke set pertanyaan ini dari bank soal di bawah ini
             </h3>
 
             <table class="table table-bordered table-hover table-striped table-condensed">            
                 <thead>
                     <tr>
-                        <td width="10%">题目编号</td>
-                        <td width="10%">分值</td>
-                        <td width="70%">题干预览</td>
-                        <td width="10%">确认添加</td>
+                        <td width="10%">Nomor</td>
+                        <td width="10%">Skor</td>
+                        <td width="70%">Pratinjau</td>
+                        <td width="10%">Tambah</td>
                     </tr>
                     <tr id="tip_Qset" style="display:none;">
                         <td colspan="4"></td>
@@ -295,11 +290,7 @@
         </div>
     </div>
 
-
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="Support/jquery-3.2.1.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="Support/js/bootstrap.min.js"></script>
     <script src="Support/js/nav.js"></script>
     <script src="Support/js/Question.js"></script>

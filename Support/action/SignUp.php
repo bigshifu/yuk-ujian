@@ -16,29 +16,29 @@
         $UserPassword = $_POST['Password'];
         $UserLevel = $_POST['UserLevel'];
 
-        $StuSignUp = "Insert into student values($UserId,'$UserName','$UserPassword');";
-        $TecherSignUp = "Insert into teacher values($UserId,'$UserName','$UserPassword');";
+        $StuSignUp = "Insert into student values('".$UserId."','".$UserName."','".$UserPassword."');";
+        $TecherSignUp = "Insert into teacher values('".$UserId.",'".$UserName."','".$UserPassword."');";
         if($UserLevel==0)
         {
-            $res = mysql_query($StuSignUp);
+            $res = mysqli_query($con, $StuSignUp);
         }else if($UserLevel==1){
-            $res = mysql_query($TecherSignUp);
+            $res = mysqli_query($con, $TecherSignUp);
         }
         
         if($res){
             $arr['success'] = 1;
-            $arr['message'] = "注册成功！！".mysql_error();
+            $arr['message'] = "Pendaftaran Berhasil".mysqli_error();
             echo json_encode($arr);
             ///echo "YES";
         }else{
             $arr['success'] = 0;
-            $arr['message'] = "注册失败\n 此ID可能已被注册\n"."ERROR: ".mysql_error();
+            $arr['message'] = "ID Mungkin Sudah digunakan\n"."ERROR: ".mysqli_error();
             echo json_encode($arr);
             ///echo $StuSignUp;
         }
     }else{
         $arr['success'] = 0;
-        $arr['message'] = "请求失败";
+        $arr['message'] = "Permintaan gagal";
         echo json_encode($arr);
     }
 

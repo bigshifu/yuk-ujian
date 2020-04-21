@@ -2,23 +2,16 @@
 
 error_reporting(E_ALL & ~E_DEPRECATED);
 
-/// 此处可更改数据库用户
-$IP      = "127.0.0.1";     // 数据库IP端口
-$DB_USER = "admin";          // 用户名
-$DB_PWD  = "admin";      // 密码
-$DB_NAME = "examdb";        // 数据库名
+$IP      = "us-cdbr-iron-east-01.cleardb.net";     
+$DB_USER = "bf1d22b1aac0f9";          
+$DB_PWD  = "57b9b17c";     
+$DB_NAME = "heroku_946f48f4a9d8130";        
 
-$con = mysql_connect($IP, $DB_USER, $DB_PWD);
-mysql_query("set names 'utf8'",$con);
-$dbLink = mysql_select_db($DB_NAME,$con);
+$con = mysqli_connect($IP, $DB_USER, $DB_PWD, $DB_NAME);
+// mysql_query("set names 'utf8'",$con);
+// $dbLink = mysql_select_db($DB_NAME,$con);
 
-
-if (!$con) {
-    die('Could not connect: ' . mysql_error());
-    return;
-}
-
-if(!$dbLink){
-    die('Could not use dbLink: ' . mysql_error());
-    return;
+if (mysqli_connect_errno()) {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  exit();
 }
