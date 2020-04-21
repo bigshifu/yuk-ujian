@@ -8,12 +8,12 @@ if(isset($_POST['operation']))
 {
     if($_POST['operation']=="ShowTable")
     {
-        echo json_encode(ReadTable());
+        echo json_encode(ReadTable($con));
     }
 
     if($_POST['operation']=="ShowDropdown")
     {
-        echo json_encode(ShowDropdown());
+        echo json_encode(ShowDropdown($con));
     }
 
     if($_POST['operation']=="CreateSet")
@@ -25,12 +25,12 @@ if(isset($_POST['operation']))
             $sQid  = $_POST['sQid'];
             $sName = $_POST['sName']; 
             $arr_res = array();
-            if(CreateSet($sName,$sQid,$sAuthor))
+            if(CreateSet($con,$sName,$sQid,$sAuthor))
             {
                 $arr_res['success'] = 1;
             }else{
                 $arr_res['success'] = 0;
-                $arr_res['message'] = mysql_error();
+                $arr_res['message'] = mysqli_error($con);
             }
             echo json_encode($arr_res);
         }
@@ -38,34 +38,34 @@ if(isset($_POST['operation']))
 
 }
 
-function ShowDropdown()
+function ShowDropdown($con)
 {
     $SQL = "SELECT QsetId AS sQid,QsetName AS sName FROM question_sets;";
-    $res = mysql_query($SQL);
+    $res = mysqli_query($con, $SQL);
     $arr = array();
-    while($row = mysql_fetch_array($res))
+    while($row = mysqli_fetch_array($res))
     {
         $arr[] = $row;
     }
     return $arr;
 }
 
-function ReadTable()
+function ReadTable($con)
 {
     $SQL = "SELECT * FROM question;";
-    $res = mysql_query($SQL);
+    $res = mysqli_query($con, $SQL);
     $arr = array();
-    while($row = mysql_fetch_array($res))
+    while($row = mysqli_fetch_array($res))
     {
         $arr[] = $row;
     }
     return $arr;
 }
 
-function CreateSet($Name,$Qid,$Author)
+function CreateSet($con,$Name,$Qid,$Author)
 {
     $SQL = "INSERT INTO question_sets(QsetName,Qinclude,CreateTime,Author) VALUES('$Name','$Qid',NOW(),'$Author');";
-    $CreateRes = mysql_query($SQL);
+    $CreateRes = mysqli_query($con, $SQL);
     if($CreateRes)
     {
         return true;

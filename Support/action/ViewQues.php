@@ -2,18 +2,18 @@
 
 include_once("connect.php");
 
-echo getQuesInfo();
+echo getQuesInfo($con);
 
-function getQuesInfo()
+function getQuesInfo($con)
 {
     $QuesSQL = "SELECT question.*,teacher.TeacherName FROM question,teacher WHERE question.TeacherId=teacher.TeacherId;";
 
-    $res = mysql_query($QuesSQL);
+    $res = mysqli_query($con, $QuesSQL);
 
     $tab = "";
 
     if($res){
-        while($a=mysql_fetch_array($res)){
+        while($a=mysqli_fetch_array($res)){
             $QC = $a['Qcontent'];
             $QC = trim($QC);
             $cor = $a['QAnswer'];

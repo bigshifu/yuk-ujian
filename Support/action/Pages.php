@@ -1,20 +1,17 @@
 <?php
     header("Content-Type:text/html;charset=utf-8");
     error_reporting(0);
-    //连接数据库
     include_once("connect.php");
-    mysql_query('set names utf8');
+    mysqli_query($con, 'set names utf8');
 
+    $page = $_POST['currentPage'] ? intval($_POST['currentPage']) : 1;//Menset default page
 
-    //查询数据库
-    $page = $_POST['currentPage'] ? intval($_POST['currentPage']) : 1;//默认是第一页
-
-    if(0 != (empty($_POST["s_id"]) + empty($_POST["s_name"]) + empty($_POST["s_score1"]) + empty($_POST["s_score2"]))){//获取提交的关键字
+    if(0 != (empty($_POST["s_id"]) + empty($_POST["s_name"]) + empty($_POST["s_score1"]) + empty($_POST["s_score2"]))){//Mendapatkan nilai post
         $StuId = $_POST["s_id"];
         $StuName = $_POST["s_name"];
         $StuScore1 = $_POST["s_score1"];
         $StuScore2 = $_POST["s_score2"];
-        $params = " student.StuName like '%{$StuName}%' or student.StuId like '%{$StuId}%' or TotalScore.total between '%{$StuScore1}%' and '%{$StuScore2}%'";//拼接查询条件
+        $params = " student.StuName like '%{$StuName}%' or student.StuId like '%{$StuId}%' or TotalScore.total between '%{$StuScore1}%' and '%{$StuScore2}%'";
         $where = "where {$params} and student.stuid=loginhistory.StuId and loginhistory.stuid=testhistory.stuid and testhistory.stuid=totalscore.stuid";
     }else{
         $where = '';
@@ -49,7 +46,7 @@ if (isset($_POST['s_score2']) && $_POST['s_score2']!="") {
     $score2 = '9999';
 }
 
-    $perPageNums = 3;//每页显示条数
+    $perPageNums = 3;//Jumlah entri per page
     $offset = ($page - 1) * $perPageNums;
 
 $sql1 = "
@@ -69,10 +66,10 @@ $sql1 = "
              And total BETWEEN '".$score1."' And '".$score2."';";
 
     //echo $sql1."<br>".$sql2;
-    $resource1 = mysql_query($sql1);
-    $resource2 = mysql_query($sql2);
-    $count = mysql_fetch_assoc($resource2);
-    while ($row = mysql_fetch_assoc($resource1)) {
+    $resource1 = mysqli_query($con, $sql1);
+    $resource2 = mysqli_query($con, $sql2);
+    $count = mysqli_fetch_assoc($resource2);
+    while ($row = mysqli_fetch_assoc($resource1)) {
         $result[] = $row;
     }
     ///echo $sql1."<br>".$sql2."<br>";

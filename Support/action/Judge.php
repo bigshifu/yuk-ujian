@@ -7,7 +7,7 @@
     $js = array();
 
     if(isset($_SESSION['UserId']) && isset($_POST['myAnswer']) && isset($_POST['thisId'])){
-        $ins = Judge($_POST['myAnswer'],$_POST['thisId']);
+        $ins = Judge($con,$_POST['myAnswer'],$_POST['thisId']);
 
         $StuId = $_SESSION['UserId'];
         $Qid = $_POST['thisId'];
@@ -18,7 +18,7 @@
 
         $historySQL = "INSERT INTO testhistory VALUES($StuId,$setid,$Qid,'$StuChoice',$StuScore,NOW());";
 
-        $r = mysql_query($historySQL);
+        $r = mysqli_query($con, $historySQL);
         if($r){
             $js['success'] = 1;
             $js['correct'] = $ins['correct'];
@@ -27,17 +27,17 @@
             echo json_encode($js);
         }else{
             $js['success'] = 0;
-            $js['message'] = "数据库操作错误(".$historySQL."): ".mysql_error();
+            $js['message'] = "Operasi Data Gagal(".$historySQL."): ".mysqli_error($con);
             echo json_encode($js);
         }
     }
 
-    function Judge($answer,$id)
+    function Judge($con,$answer,$id)
     {
         $arr = array();
         $JudgeSQL = "SELECT QAnswer,QScore FROM question WHERE Qid=$id;";
-        $res = mysql_query($JudgeSQL);
-        $Qcoreect = mysql_fetch_array($res);
+        $res = mysqli_query($con, $JudgeSQL);
+        $Qcoreect = mysqli_fetch_array($res);
 
         if($Qcoreect['QAnswer']==$answer){
             $arr['correct'] = 1;

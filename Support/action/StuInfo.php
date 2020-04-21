@@ -4,12 +4,9 @@ session_start();
 
 header("Content-Type:text/html;charset=utf-8");
 error_reporting(0);
-    //连接数据库
-//mysql_connect('127.0.0.1', 'Exam', 'exam1234');
-//mysql_select_db('examdb');
 
 include_once("connect.php");
-mysql_query('set names utf8');
+mysqli_query($con, 'set names utf8');
 
 $UserId = $_SESSION['UserId'];
 
@@ -24,10 +21,9 @@ if(isset($_POST['setid']))
     }
 }
 
-    //查询数据库
-$page = $_POST['currentPage'] ? intval($_POST['currentPage']) : 1;//默认是第一页
+$page = $_POST['currentPage'] ? intval($_POST['currentPage']) : 1;
 
-$perPageNums = 5;//每页显示条数
+$perPageNums = 5;
 $offset = ($page - 1) * $perPageNums;
 
 $sql1 = "SELECT question.Qid,question.QScore,question.QAnswer,question.Qcontent,question.QChoice,StuScore,StuChoise,TestTime FROM testhistory,question WHERE StuId=$UserId AND question.qid=testhistory.qid $CONDITIONS limit $offset,$perPageNums;";
@@ -39,26 +35,26 @@ $sql3 = "SELECT total FROM GradeView WHERE StuId=$UserId;";
 $sql4 = "SELECT MAX(loginTime) as loginTime FROM loginhistory WHERE Stuid=$UserId and isTeacher=0;";
 
     //echo $sql1."<br>".$sql2;
-$resource1 = mysql_query($sql1);
-$resource2 = mysql_query($sql2);
-$count = mysql_fetch_assoc($resource2);
+$resource1 = mysqli_query($con, $sql1);
+$resource2 = mysqli_query($con, $sql2);
+$count = mysqli_fetch_assoc($resource2);
 $result = array();
-while ($row = mysql_fetch_assoc($resource1)) {
+while ($row = mysqli_fetch_assoc($resource1)) {
     $result[] = $row;
 }
 
 $ar = array();
 
-$rr = mysql_query($sql3);
+$rr = mysqli_query($con, $sql3);
 
-if(mysql_num_rows($rr)<1){
+if(mysqli_num_rows($rr)<1){
     $ar['total'] = 0;
 }else{
-    $resource3 = mysql_fetch_array($rr);
+    $resource3 = mysqli_fetch_array($rr);
     $ar['total'] = $resource3['total'];
 }
 
-$resource4 = mysql_fetch_array(mysql_query($sql4));
+$resource4 = mysqli_fetch_array(mysqli_query($con, $sql4));
 
 $ar['lastTime'] = $resource4['loginTime']; 
 

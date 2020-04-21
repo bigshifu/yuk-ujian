@@ -8,9 +8,9 @@ if(isset($_POST['target']) && isset($_POST['Qid']))
 {
     if($_POST['target']=='Question')
     {
-        echo json_encode(DeleteFromQuestion($_POST['Qid']));
+        echo json_encode(DeleteFromQuestion($con,$_POST['Qid']));
     }else{
-        echo json_encode(DeleteFromSet($_POST['target'],$_POST['Qid']));
+        echo json_encode(DeleteFromSet($con,$_POST['target'],$_POST['Qid']));
     }
 }else{
     $res = array();
@@ -19,7 +19,7 @@ if(isset($_POST['target']) && isset($_POST['Qid']))
     echo json_encode($res);
 }
 
-function DeleteFromSet($Setid,$targetid)
+function DeleteFromSet($con,$Setid,$targetid)
 {
     $target = $targetid;
     $target = str_replace('Q','',$target);
@@ -28,18 +28,18 @@ function DeleteFromSet($Setid,$targetid)
 
     $res = array();
 
-    if(mysql_query($SQL2) && mysql_query($SQL3))
+    if(mysqli_query($con, $SQL2) && mysqli_query($con, $SQL3))
     {
         $res['success'] = 1;
     }else{
         $res['success'] = 0;
-        $res['message'] = "DeleteFromSet::".mysql_error();
+        $res['message'] = "DeleteFromSet::".mysqli_error($con);
     }
 
     return $res;
 }
 
-function DeleteFromQuestion($targetid)
+function DeleteFromQuestion($con,$targetid)
 {
     $target = $targetid;
     $target = str_replace('Q','',$target);
@@ -49,12 +49,12 @@ function DeleteFromQuestion($targetid)
 
     $res = array();
 
-    if(mysql_query($SQL3) && mysql_query($SQL2) && mysql_query($SQL1))
+    if(mysqli_query($con, $SQL3) && mysqli_query($con, $SQL2) && mysqli_query($con, $SQL1))
     {
         $res['success'] = 1;
     }else{
         $res['success'] = 0;
-        $res['message'] = "target:".$target."::".mysql_error();
+        $res['message'] = "target:".$target."::".mysqli_error($con, );
     }
 
     return $res;

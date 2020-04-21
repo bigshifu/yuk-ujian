@@ -9,11 +9,11 @@ $tab = "<tr>
 <td>100</td>
 <td>10</td>
 <td>
-    <button class='btn btn-xs btn-primary'>查看用户</button>
+    <button class='btn btn-xs btn-primary'>Lihat</button>
 </td>
 </tr>";
 
-$arr = getStuInfo();
+$arr = getStuInfo($con);
 
 print_r($arr);
 $tab = "";
@@ -24,14 +24,14 @@ foreach($arr as $k=>$v){
     $tab .= "<td>".$v['lastTime']."</td>";
     $tab .= "<td>".$v['TotalScore']."</td>";
     $tab .= "<td>".(string)($v['Wrong']+$v['Right'])."</td>";
-    $tab .= "<td><button class='btn btn-xs btn-primary'>查看用户</button></td>";
+    $tab .= "<td><button class='btn btn-xs btn-primary'>Lihat</button></td>";
     $tab .= "</tr>";
 }
 
 echo $tab;
 
 
-function getStuInfo()
+function getStuInfo($con)
 {
     // id name
     $SQL1 = "SELECT * FROM student;";
@@ -51,36 +51,36 @@ function getStuInfo()
     //total score
     $TotalScore = "SELECT StuId,SUM(StuScore) as TotalScore FROM testhistory GROUP BY StuId;";
 
-    $r1 = mysql_query($SQL1);
+    $r1 = mysqli_query($con, $SQL1);
     $r1s = array();
     if ($r1) {
-        while ($a = mysql_fetch_array($r1)) {
+        while ($a = mysqli_fetch_array($r1)) {
             $r1s[$a['StuId']]['StuName'] = $a['StuName'];
         }
     }
-    $r2 = mysql_query($SQL2);
+    $r2 = mysqli_query($con, $SQL2);
     if ($r2) {
-        while ($a = mysql_fetch_array($r2)) {
+        while ($a = mysqli_fetch_array($r2)) {
             $r1s[$a['StuId']]['lastTime'] = $a['lastTime'];
         }
     }
-    $rt = mysql_query($Right);
+    $rt = mysqli_query($con, $Right);
     if ($rt) {
-        while ($a = mysql_fetch_array($rt)) {
+        while ($a = mysqli_fetch_array($rt)) {
             $r1s[$a['StuId']]['Right'] = $a['Correct'];
         }
     }
-    $wr = mysql_query($Wrong);
+    $wr = mysqli_query($con, $Wrong);
     if ($wr) {
-        while ($a = mysql_fetch_array($wr)) {
+        while ($a = mysqli_fetch_array($wr)) {
             $r1s[$a['StuId']]['Wrong'] = $a['Wrong'];
         }
     }
     //$tq = mysql_query($TotalQues);
 
-    $ts = mysql_query($TotalScore);
+    $ts = mysqli_query($con, $TotalScore);
     if ($ts) {
-        while ($a = mysql_fetch_array($ts)) {
+        while ($a = mysqli_fetch_array($ts)) {
             $r1s[$a['StuId']]['TotalScore'] = $a['TotalScore'];
         }
     }

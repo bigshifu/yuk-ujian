@@ -12,16 +12,16 @@
 
     $RecordSQL = "INSERT INTO Question VALUES(null,'$QContent','$QCorrect',$QScore,$TeacherId,NOW(),'$QChoice');";
 
-    $res = mysql_query($RecordSQL);
+    $res = mysqli_query($con, $RecordSQL);
 
     $arr = array();
 
     if($res){
         $arr['success'] = 1;
-        $arr['message'] = "试题录入成功";
+        $arr['message'] = "Entri Pertanyaan Berhasil";
         echo json_encode($arr);
     }else{
         $arr['success'] = 0;
-        $arr['message'] = '数据库操作失败: '.mysql_error();
+        $arr['message'] = 'Operasi Data Gagal: '.mysqli_error($con);
         echo json_encode($arr);
     }

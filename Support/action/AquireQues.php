@@ -32,11 +32,11 @@ $CONDITONS = "";
 
 $SQL_CONDITINS = "SELECT * FROM question_sets WHERE QsetId=$setid;";
 
-$set_res = mysql_query($SQL_CONDITINS);
+$set_res = mysqli_query($con, $SQL_CONDITINS);
 
 if($set_res)
 {
-    $row = mysql_fetch_array($set_res);
+    $row = mysqli_fetch_array($set_res);
     $Qid = substr(str_replace('Q',',',$row['Qinclude']),1);
     $CONDITONS = $Qid;
 }
@@ -53,9 +53,9 @@ $DONE = "SELECT COUNT(*) as done FROM testhistory WHERE stuid=$Userid AND Qset=$
 $ALL = "SELECT COUNT(*) as allQues FROM question WHERE Qid IN($CONDITONS);";
 $SCORE = "SELECT total FROM GradeView WHERE stuid=$Userid;";
 
-$_d = mysql_fetch_array(mysql_query($DONE)); 
-$_a = mysql_fetch_array(mysql_query($ALL)); 
-$_t = mysql_fetch_array(mysql_query($SCORE)); 
+$_d = mysqli_fetch_array(mysqli_query($con, $DONE)); 
+$_a = mysqli_fetch_array(mysqli_query($con, $ALL)); 
+$_t = mysqli_fetch_array(mysqli_query($con, $SCORE)); 
 $percent = "";
 
 if($_a['allQues']!=0){
@@ -66,8 +66,8 @@ if($_a['allQues']!=0){
 }
 
 
-$res = mysql_query($CountSQL);
-$cnt = mysql_fetch_array($res);
+$res = mysqli_query($con, $CountSQL);
+$cnt = mysqli_fetch_array($res);
 
 if ($cnt['num'] == 0) {
     $percent = "100%";
@@ -76,15 +76,15 @@ if ($cnt['num'] == 0) {
     $arr['total'] = $_t['total'];
     $arr['percent'] = $percent;
     $arr['rest'] = 0;
-    info($Userid,$arr);
+    info($con,$Userid,$arr);
     echo json_encode($arr);
     return;
 }
 
-$res = mysql_query($AquireSQL);
+$res = mysqli_query($con, $AquireSQL);
 $ques = array();
 if ($res) {
-    while ($row = mysql_fetch_array($res)) {
+    while ($row = mysqli_fetch_array($res)) {
         $ques[] = $row;
     }
     ///echo "<pre>";
@@ -95,13 +95,13 @@ if ($res) {
     $arr['rest'] = $cnt['num'] - 1;
 } else {
     $arr['success'] = "0";
-    $arr['message'] = "数据库操作失败: " . mysql_error();
+    $arr['message'] = "Operasi Data Gagal: " . mysqli_error($con);
     ///echo $AquireSQL;
 }
 
-info($Userid,$arr);
+info($con, $Userid,$arr);
 
-function info($Userid,&$arr)
+function info($con, $Userid,&$arr)
 {
 
     $TestSQL1 = "SELECT SUM(StuScore) as total FROM testhistory WHERE StuId=$Userid;";
@@ -109,10 +109,10 @@ function info($Userid,&$arr)
     $TestSQL3 = "SELECT COUNT(*) as wrongNum FROM testhistory WHERE StuId=$Userid AND StuScore=0;";
     $TestSQL4 = "SELECT COUNT(*) as allNum FROM question;";
 
-    $total = mysql_fetch_array(mysql_query($TestSQL1));
-    $right = mysql_fetch_array(mysql_query($TestSQL2));
-    $wrong = mysql_fetch_array(mysql_query($TestSQL3));
-    $allNum = mysql_fetch_array(mysql_query($TestSQL4));
+    $total = mysqli_fetch_array(mysqli_query($con, $TestSQL1));
+    $right = mysqli_fetch_array(mysqli_query($con, $TestSQL2));
+    $wrong = mysqli_fetch_array(mysqli_query($con, $TestSQL3));
+    $allNum = mysqli_fetch_array(mysqli_query($con, $TestSQL4));
 
     if ($total['total'] == "") {
         $arr['total'] = 0;
@@ -142,5 +142,5 @@ function info($Userid,&$arr)
 $arr['percent'] = $percent;
 
 //print_r($arr);
-mysql_close($con);
+mysqli_close($con);
 echo json_encode($arr);

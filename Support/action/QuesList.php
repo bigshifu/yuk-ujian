@@ -4,9 +4,8 @@ session_start();
 
 header("Content-Type:text/html;charset=utf-8");
 error_reporting(0);
-    //连接数据库
 include_once("connect.php");
-mysql_query('set names utf8');
+mysqli_query($con, 'set names utf8');
 
 $setId = "";
 
@@ -24,10 +23,10 @@ if(isset($_POST['setName']))
     }
 }
 
-function NO_MORE_RESULT_IN_THIS_SET($setid)
+function NO_MORE_RESULT_IN_THIS_SET($con, $setid)
 {
     $SQL = "DELETE FROM question_sets WHERE QsetId=$setid;";
-    if(mysql_query($SQL))
+    if(mysqli_query($con, $SQL))
     {
         $arr = array();
         $arr['empty'] = 1;
@@ -36,10 +35,9 @@ function NO_MORE_RESULT_IN_THIS_SET($setid)
     }
 }
 
-    //查询数据库
-$page = $_POST['currentPage_Ques'] ? intval($_POST['currentPage_Ques']) : 1;//默认是第一页
+$page = $_POST['currentPage_Ques'] ? intval($_POST['currentPage_Ques']) : 1;
 
-$perPageNums = 5;//每页显示条数
+$perPageNums = 5;//Jumlah entri per page
 $offset = ($page - 1) * $perPageNums;
 
 $WITH_SET  = "";
@@ -47,15 +45,15 @@ $CONDITONS = "";
 
 $SQL_CONDITINS = "SELECT * FROM question_sets $setId;";
 
-$set_res = mysql_query($SQL_CONDITINS);
+$set_res = mysqli_query($con, $SQL_CONDITINS);
 
 if($set_res)
 {
-    $row = mysql_fetch_array($set_res);
+    $row = mysqli_fetch_array($set_res);
     $Qid = substr(str_replace('Q',',',$row['Qinclude']),1);
     if($Qid=='')
     {
-        NO_MORE_RESULT_IN_THIS_SET($_POST['setName']);
+        NO_MORE_RESULT_IN_THIS_SET($con, $_POST['setName']);
     }
     $CONDITONS = $Qid;
 }
@@ -81,15 +79,15 @@ $SQL = "SELECT Qid,Qcontent,QChoice,QAnswer,QScore,CreateTime,TeacherName
 
 $sql2 = "SELECT COUNT(*) as total FROM Question $SET_CNT;";
 
-$resource1 = mysql_query($SQL);
+$resource1 = mysqli_query($con, $SQL);
 
-$resource2 = mysql_query($sql2);
+$resource2 = mysqli_query($con, $sql2);
 /// CNT of Pages
-$count = mysql_fetch_assoc($resource2);
+$count = mysqli_fetch_assoc($resource2);
 
 $result = array();
 
-while ($row = mysql_fetch_assoc($resource1)) {
+while ($row = mysqli_fetch_assoc($resource1)) {
     $result[] = $row;
 }
 
