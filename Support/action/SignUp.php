@@ -17,7 +17,7 @@
         $UserLevel = $_POST['UserLevel'];
 
         $StuSignUp = "Insert into student values('".$UserId."','".$UserName."','".$UserPassword."');";
-        $TecherSignUp = "Insert into teacher values('".$UserId.",'".$UserName."','".$UserPassword."');";
+        $TecherSignUp = "Insert into teacher values('".$UserId."','".$UserName."','".$UserPassword."');";
         if($UserLevel==0)
         {
             $res = mysqli_query($con, $StuSignUp);
